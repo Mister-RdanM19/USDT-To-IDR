@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDT to IDR Converter</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #121212;
+            color: #00FF00;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .converter {
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            border: 2px solid #00FF00;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #00FF00;
+            background-color: #121212;
+            color: #00FF00;
+            border-radius: 5px;
+            outline: none;
+        }
+        input:focus, button:focus {
+            border-color: #ff9800;
+        }
+        button {
+            cursor: pointer;
+            background-color: #00FF00;
+            color: black;
+            border: none;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #ff9800;
+        }
+        .result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .result p {
+            color: #ff9800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="converter">
+    <h1>USDT to IDR Converter</h1>
+    <input type="number" id="usdtAmount" placeholder="Enter amount in USDT">
+    <button onclick="convertToIDR()">Convert</button>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    async function convertToIDR() {
+        const usdtAmount = document.getElementById('usdtAmount').value;
+        if (usdtAmount === '') {
+            alert('Please enter an amount');
+            return;
+        }
+
+        // Fetch the current exchange rate from CoinGecko API
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=idr');
+        const data = await response.json();
+        const idrRate = data.tether.idr;
+
+        const idrAmount = (usdtAmount * idrRate).toFixed(2);
+
+        document.getElementById('result').innerHTML = `<p>${usdtAmount} USDT = ${idrAmount} IDR</p>`;
+    }
+</script>
+
+</body>
+</html>
